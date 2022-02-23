@@ -37,9 +37,23 @@ public class PlayerController : MonoBehaviour
 			direction = Vector3.zero;
 
 			if (Input.GetAxisRaw("Horizontal") != 0)
+            {
 				direction.x = Input.GetAxisRaw("Horizontal");
+
+                if (direction.x == 1)
+					transform.eulerAngles = new Vector3(0, 90, 0);
+                else
+					transform.eulerAngles = new Vector3(0, -90, 0);
+            }
 			else if (Input.GetAxisRaw("Vertical") != 0)
+            {
 				direction.z = Input.GetAxisRaw("Vertical");
+
+				if (direction.z == 1)
+					transform.eulerAngles = new Vector3(0, 0, 0);
+				else
+					transform.eulerAngles = new Vector3(0, 180, 0);
+            }
 
 			currentPosition = transform.position;
 
