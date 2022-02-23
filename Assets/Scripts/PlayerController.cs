@@ -24,6 +24,16 @@ public class PlayerController : MonoBehaviour
 
     #region Unity Functions
 
+    public void Awake()
+    {
+		GetComponents();
+    }
+
+    public void Start()
+    {
+		SetUp();
+    }
+
     void Update()
     {
 		if (transform.position != new Vector3(currentPosition.x + direction.x, transform.position.y, currentPosition.z + direction.z))
@@ -78,7 +88,15 @@ public class PlayerController : MonoBehaviour
 
 	#region Class Functions
 
-	// ***
+	private void GetComponents()
+    {
+		rb = GetComponent<Rigidbody>();
+    }
+
+	private void SetUp()
+    {
+		// ...
+    }
 
 	#endregion Class Functions
 }
