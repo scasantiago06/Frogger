@@ -20,11 +20,12 @@ public class PlayerController : MonoBehaviour, IReactableObject
 	[SerializeField]
 	private float jumpForce;
 
+	public int maxLineReached;
+	public int currentline;
+
 	private GameManager gameManager;
 
 	private GameObject platformPivot;
-	[SerializeField]
-	private GameObject internalObstacle;
 
 	private bool onPlatform;
 
@@ -57,16 +58,11 @@ public class PlayerController : MonoBehaviour, IReactableObject
         }
 		if (other.CompareTag("Next"))
 		{
-			internalObstacle.transform.position = transform.position;
-
 			gameManager.NextGamePhase();
 
-			currentPosition.x = Mathf.Round(currentPosition.x);
-			currentPosition.z = Mathf.Round(currentPosition.z);
-
-			internalObstacle.SetActive(true);
-
 			GetComponent<PlayerController>().enabled = false;
+
+			gameObject.SetActive(false);
 		}
 	}
 
@@ -100,7 +96,7 @@ public class PlayerController : MonoBehaviour, IReactableObject
 
 	public void SetUp()
     {
-		internalObstacle.SetActive(false);
+		// ...
     }
 
 	private void Movement()
@@ -115,7 +111,10 @@ public class PlayerController : MonoBehaviour, IReactableObject
 		{
 			direction = Vector3.zero;
 
-			GetDirection();
+            if (gameManager.Lifes > 0)
+            {
+				GetDirection();
+            }
 
 			currentPosition = transform.position;
 
@@ -142,7 +141,7 @@ public class PlayerController : MonoBehaviour, IReactableObject
 			// Player rotation
 			if (direction.x == 1)
 				transform.eulerAngles = new Vector3(0, 90, 0);
-			else
+            else
 				transform.eulerAngles = new Vector3(0, -90, 0);
 		}
 		else if (Input.GetAxisRaw("Vertical") != 0)
@@ -151,9 +150,22 @@ public class PlayerController : MonoBehaviour, IReactableObject
 
 			// Player rotation
 			if (direction.z == 1)
+            {
+				currentline++;
+
+				if (currentline > maxLineReached)
+				{
+					maxLineReached = currentline;
+					gameManager.SumScore();
+				}
+				
 				transform.eulerAngles = new Vector3(0, 0, 0);
-			else
+			}
+            else
+            {
+				currentline--;
 				transform.eulerAngles = new Vector3(0, 180, 0);
+			}
 		}
 	}
 
@@ -178,6 +190,10 @@ public class PlayerController : MonoBehaviour, IReactableObject
 		direction = Vector3.zero;
 		currentPosition = transform.position;
 		transform.eulerAngles = new Vector3(0, 0, 0);
+
+		gameManager.SubtractLife();
+
+		currentline = 0;
 	}
 
 	void DoLogStuff(GameObject log)
@@ -197,5 +213,6 @@ public class PlayerController : MonoBehaviour, IReactableObject
 
 		positionToGo = platformPivot.transform.position;
 	}
+
 	#endregion Class Functions
 }

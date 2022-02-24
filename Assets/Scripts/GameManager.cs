@@ -6,12 +6,18 @@ public class GameManager : MonoBehaviour
 {
     #region Variables
 
+    UIManager uiManager;
+
     private Vector3 initialPosition;
 
     [SerializeField]
     private GameObject[] frogs;
+    private PlayerController currentFrog;
+    private TimeController timeController;
 
     private int frogIndex;
+    private int lifes;
+    private int score;
 
     #endregion Variables
 
@@ -38,11 +44,15 @@ public class GameManager : MonoBehaviour
 
     private void GetComponents()
     {
-        // ...
+        uiManager = FindObjectOfType<UIManager>();
+        timeController = FindObjectOfType<TimeController>();
     }
 
     public void SetUp()
     {
+        lifes = 3;
+        score = 0;
+
         initialPosition = new Vector3(0, 0.1f, 0);
 
         frogIndex = 0;
@@ -50,6 +60,8 @@ public class GameManager : MonoBehaviour
         foreach(var frog in frogs)
         {
             frog.transform.position = initialPosition;
+
+            frog.SetActive(true);
 
             PlayerController frogController = frog.GetComponent<PlayerController>();
 
@@ -60,6 +72,8 @@ public class GameManager : MonoBehaviour
         }
 
         frogs[frogIndex].SetActive(true);
+
+        currentFrog = frogs[frogIndex].GetComponent<PlayerController>();
     }
 
     public void NextGamePhase()
@@ -69,11 +83,30 @@ public class GameManager : MonoBehaviour
         if (frogIndex < frogs.Length)
         {
             frogs[frogIndex].SetActive(true);
+            currentFrog = frogs[frogIndex].GetComponent<PlayerController>();
+            timeController.Restart();
         }
         else
         {
-            // ToDo Victory
+            uiManager.Victory();
         }
+    }
+
+    public void SubtractLife()
+    {
+        lifes--;
+
+        uiManager.SubtractLifeImage(lifes);
+        timeController.Restart();
+
+        if (lifes == 0)
+            uiManager.Defeat();
+    }
+
+    public void SumScore()
+    {
+        score += 10;
+        uiManager.ChangeCurrentScoreText(score);
     }
 
     #endregion Class Functions
@@ -83,6 +116,11 @@ public class GameManager : MonoBehaviour
     public Vector3 InitialPosition
     {
         get => initialPosition;
+    }
+
+    public int Lifes
+    {
+        get => lifes;
     }
 
     #endregion Properties
