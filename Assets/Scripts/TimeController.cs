@@ -6,30 +6,33 @@ using TMPro;
 
 public class TimeController : MonoBehaviour
 {
-    #region Properties
+    #region Variables
 
     [Tooltip("Time in seconds"), SerializeField]
     private int initialTime;
+
     [Tooltip("Time scale"), SerializeField, Range(-10.0f, 10.0f)]
     private float timeScale;
-    [SerializeField]
-    private TextMeshProUGUI timeText;
-    [SerializeField]
-    private bool paused;
-    [SerializeField]
-    private UnityEvent timeFinished;
-
     private float frameTimeWithTimeScale;
     private float timeInSecondsToShow;
     private float timeScaleInPause;
     private float initialTimeScale;
 
-    #endregion Properties
+    [SerializeField]
+    private bool paused;
+
+    [SerializeField]
+    private TextMeshProUGUI timeText;
+
+    [SerializeField]
+    private UnityEvent timeFinished;
+
+    #endregion Variables
 
     #region Unity Functions
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         initialTimeScale = timeScale;
         timeInSecondsToShow = initialTime;
@@ -38,7 +41,7 @@ public class TimeController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (!paused)
         {

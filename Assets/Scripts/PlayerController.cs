@@ -4,32 +4,31 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour, IReactableObject
 {
-    #region Variables
+	#region Variables
+
+	public int maxLineReached;
+	public int currentline;
 
 	[SerializeField]
-    private LayerMask obstacles;
+	private float speed;
+	[SerializeField]
+	private float jumpForce;
+	public float logOffset;
+
+	private bool onPlatform;
+
+	private GameObject platformPivot;
+
+	private Rigidbody frogRigidBody;
 
 	private Vector3 direction;
 	private Vector3 currentPosition;
 	private Vector3 positionToGo;
 
-	private Rigidbody rb;
+	[SerializeField]
+    private LayerMask obstacles;
 	
-	[SerializeField]
-	private float speed;
-	[SerializeField]
-	private float jumpForce;
-
-	public int maxLineReached;
-	public int currentline;
-
 	private GameManager gameManager;
-
-	private GameObject platformPivot;
-
-	private bool onPlatform;
-
-	public float logOffset;
 
 	#endregion Variables
 
@@ -70,7 +69,7 @@ public class PlayerController : MonoBehaviour, IReactableObject
     {
 		if (collision.collider.CompareTag("Platform"))
 		{
-			DoLogStuff(collision.gameObject);
+			SetPivotToFollow(collision.gameObject);
 			onPlatform = true;
 		}
 	}
@@ -89,7 +88,7 @@ public class PlayerController : MonoBehaviour, IReactableObject
 
     private void GetComponents()
     {
-		rb = GetComponent<Rigidbody>();
+		frogRigidBody = GetComponent<Rigidbody>();
 
 		gameManager = FindObjectOfType<GameManager>();
     }
@@ -112,9 +111,7 @@ public class PlayerController : MonoBehaviour, IReactableObject
 			direction = Vector3.zero;
 
             if (gameManager.Lifes > 0)
-            {
 				GetDirection();
-            }
 
 			currentPosition = transform.position;
 
@@ -148,16 +145,12 @@ public class PlayerController : MonoBehaviour, IReactableObject
 		{
 			direction.z = Input.GetAxisRaw("Vertical");
 
-			// Player rotation
+			// Player rotation and line control
 			if (direction.z == 1)
-            {
+			{
 				currentline++;
 
-				if (currentline > maxLineReached)
-				{
-					maxLineReached = currentline;
-					gameManager.SumScore();
-				}
+				LineControl();
 				
 				transform.eulerAngles = new Vector3(0, 0, 0);
 			}
@@ -169,6 +162,16 @@ public class PlayerController : MonoBehaviour, IReactableObject
 		}
 	}
 
+	private void LineControl()
+    {
+		if (currentline > maxLineReached)
+		{
+			maxLineReached = currentline;
+
+			gameManager.SumScore();
+		}
+	}
+
 	private void Jump()
     {
 		if (direction.x != 0 || direction.z != 0)
@@ -177,37 +180,42 @@ public class PlayerController : MonoBehaviour, IReactableObject
 			Physics.Raycast(transform.position, direction, out hit, 1, obstacles);
 
 			if (hit.collider == null)
-				rb.AddForce(Vector3.up * jumpForce, ForceMode.Acceleration);
+				frogRigidBody.AddForce(Vector3.up * jumpForce, ForceMode.Acceleration);
 			else
 				direction = Vector3.zero;
 		}
 	}
 
+	// Interface...
 	public void React()
     {
+		// Frog Setup
 		transform.position = gameManager.InitialPosition;
 
 		direction = Vector3.zero;
+
 		currentPosition = transform.position;
+
 		transform.eulerAngles = new Vector3(0, 0, 0);
 
+		// Other Setups
 		gameManager.SubtractLife();
 
 		currentline = 0;
 	}
 
-	void DoLogStuff(GameObject log)
+	public void SetPivotToFollow(GameObject pivots)
 	{
 		float closestPosition = 100;
 
-		foreach (Transform t in log.transform)
+		foreach (Transform pivot in pivots.transform)
 		{
-			float distance = (t.position - transform.position).magnitude;
+			float distance = (pivot.position - transform.position).magnitude;
 
 			if (distance < closestPosition)
 			{
 				closestPosition = distance;
-				platformPivot = t.gameObject;
+				platformPivot = pivot.gameObject;
 			}
 		}
 

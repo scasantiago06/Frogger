@@ -5,7 +5,7 @@ using TMPro;
 
 public class UIManager : MonoBehaviour
 {
-    #region Properties
+    #region Variables
 
     [SerializeField]
     private GameObject[] lifesImages;
@@ -25,9 +25,11 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI finalScore;
 
-    #endregion Properties
+    #endregion Variables
 
     #region Unity Functions
+
+    // ...
 
     #endregion Unity Functions
 

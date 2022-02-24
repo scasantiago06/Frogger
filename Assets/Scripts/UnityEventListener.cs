@@ -6,13 +6,12 @@ namespace UnityEngine
     {
         public class UnityEventListener : MonoBehaviour
         {
-            #region Properties
+            #region Variables
 
             public UnityEvent onEnable, onDisable;
-            public UnityEvent onAwake;
-            public UnityEvent onStart, onUpdate, onFixedUpdate, onLateUpdate;
+            public UnityEvent onAwake, onStart, onUpdate, onFixedUpdate, onLateUpdate;
 
-            #endregion Properties
+            #endregion Variables
 
             #region Unity functions
 

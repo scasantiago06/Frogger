@@ -4,21 +4,34 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-	Vector3 offset;
+    #region Variables
 
+	// Public...
 	public GameObject player;
 
-	float maxPos;
-	// Use this for initialization
-	void Start()
+	// Private...
+    private Vector3 offset;
+
+    #endregion Variables
+
+    #region Unity Functions
+
+    void Start()
 	{
 		offset = transform.position;
 	}
 
-	// Update is called once per frame
 	void Update()
 	{
 		if (player != null)
 			transform.position = offset + new Vector3(0, 0, player.transform.position.z);
 	}
+
+    #endregion Unity Functions
+
+    #region Class Functions
+
+	// ...
+
+    #endregion Class Functions
 }

@@ -11,7 +11,7 @@ public class Generator : MonoBehaviour
     [SerializeField]
     private Transform spawnPoint;
 
-    [SerializeField]
+    [Space, SerializeField]
     private float minWait;
     [SerializeField]
     private float maxWait;

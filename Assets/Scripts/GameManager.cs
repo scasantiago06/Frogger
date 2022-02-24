@@ -6,19 +6,20 @@ public class GameManager : MonoBehaviour
 {
     #region Variables
 
-    UIManager uiManager;
+    private int frogIndex;
+    private int lifes;
+    private int score;
 
     private Vector3 initialPosition;
 
     [SerializeField]
     private GameObject[] frogs;
+
+    // References...
     private PlayerController currentFrog;
     private TimeController timeController;
     private CameraFollow cameraFollow;
-
-    private int frogIndex;
-    private int lifes;
-    private int score;
+    private UIManager uiManager;
 
     #endregion Variables
 
@@ -34,11 +35,6 @@ public class GameManager : MonoBehaviour
         SetUp();
     }
 
-    private void Update()
-    {
-
-    }
-
     #endregion Unity Functions
 
     #region Class Functions
@@ -52,13 +48,13 @@ public class GameManager : MonoBehaviour
 
     public void SetUp()
     {
+        // Variables Initialization...
         lifes = 3;
         score = 0;
-
         initialPosition = new Vector3(0, 0.1f, 0);
-
         frogIndex = 0;
 
+        // Frogs Setup...
         foreach(var frog in frogs)
         {
             frog.transform.position = initialPosition;
@@ -76,9 +72,11 @@ public class GameManager : MonoBehaviour
         frogs[frogIndex].SetActive(true);
 
         currentFrog = frogs[frogIndex].GetComponent<PlayerController>();
+
         cameraFollow.player = currentFrog.gameObject;
     }
 
+    // When a frog reaches the goal...
     public void NextGamePhase()
     {
         frogIndex++;
@@ -86,8 +84,11 @@ public class GameManager : MonoBehaviour
         if (frogIndex < frogs.Length)
         {
             frogs[frogIndex].SetActive(true);
+
             currentFrog = frogs[frogIndex].GetComponent<PlayerController>();
+
             cameraFollow.player = currentFrog.gameObject;
+
             timeController.Restart();
         }
         else
@@ -101,6 +102,7 @@ public class GameManager : MonoBehaviour
         lifes--;
 
         uiManager.SubtractLifeImage(lifes);
+
         timeController.Restart();
 
         if (lifes == 0)
@@ -110,6 +112,7 @@ public class GameManager : MonoBehaviour
     public void SumScore()
     {
         score += 10;
+
         uiManager.ChangeCurrentScoreText(score);
     }
 
