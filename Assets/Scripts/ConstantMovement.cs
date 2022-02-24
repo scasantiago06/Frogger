@@ -2,14 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class ConstantMovement : MonoBehaviour
 {
     #region Variables
 
-    private Vector3 initialPosition;
-
-    [SerializeField]
-    private GameObject[] characters;
+    private float speed;
 
     #endregion Variables
 
@@ -27,7 +24,10 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        transform.position = Vector3.MoveTowards(transform.position, transform.position + Vector3.right, speed * Time.deltaTime);
 
+        if (transform.position.x < -20 || transform.position.x > 15)
+            Destroy(this.gameObject);
     }
 
     #endregion Unity Functions
@@ -41,16 +41,17 @@ public class GameManager : MonoBehaviour
 
     private void SetUp()
     {
-        initialPosition = new Vector3(0, 0.1f, 0);
+        // ...
     }
 
     #endregion Class Functions
 
     #region Properties
 
-    public Vector3 InitialPosition
+    public float Speed
     {
-        get => initialPosition;
+        get => speed; 
+        set => speed = value;
     }
 
     #endregion Properties

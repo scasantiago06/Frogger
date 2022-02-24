@@ -22,26 +22,26 @@ public class PlayerController : MonoBehaviour, IReactableObject
 
 	private GameManager gameManager;
 
-    #endregion Variables
+	#endregion Variables
 
-    #region Unity Functions
+	#region Unity Functions
 
-    public void Awake()
+	private void Awake()
     {
 		GetComponents();
     }
 
-    public void Start()
+	private void Start()
     {
 		SetUp();
     }
 
-    public void Update()
+	private void Update()
     {
 		Movement();
 	}
 
-    public void OnTriggerEnter(Collider other)
+	private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Dangerous"))
         {
