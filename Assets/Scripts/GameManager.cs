@@ -9,7 +9,9 @@ public class GameManager : MonoBehaviour
     private Vector3 initialPosition;
 
     [SerializeField]
-    private GameObject[] characters;
+    private GameObject[] frogs;
+
+    private int frogIndex;
 
     #endregion Variables
 
@@ -39,9 +41,39 @@ public class GameManager : MonoBehaviour
         // ...
     }
 
-    private void SetUp()
+    public void SetUp()
     {
         initialPosition = new Vector3(0, 0.1f, 0);
+
+        frogIndex = 0;
+
+        foreach(var frog in frogs)
+        {
+            frog.transform.position = initialPosition;
+
+            PlayerController frogController = frog.GetComponent<PlayerController>();
+
+            frogController.enabled = true;
+            frogController.SetUp();
+
+            frog.SetActive(false);
+        }
+
+        frogs[frogIndex].SetActive(true);
+    }
+
+    public void NextGamePhase()
+    {
+        frogIndex++;
+
+        if (frogIndex < frogs.Length)
+        {
+            frogs[frogIndex].SetActive(true);
+        }
+        else
+        {
+            // ToDo Victory
+        }
     }
 
     #endregion Class Functions

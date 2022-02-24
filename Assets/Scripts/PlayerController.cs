@@ -9,11 +9,8 @@ public class PlayerController : MonoBehaviour, IReactableObject
 	[SerializeField]
     private LayerMask obstacles;
 
-	[SerializeField]
 	private Vector3 direction;
-	[SerializeField]
 	private Vector3 currentPosition;
-	[SerializeField]
 	private Vector3 positionToGo;
 
 	private Rigidbody rb;
@@ -25,7 +22,9 @@ public class PlayerController : MonoBehaviour, IReactableObject
 
 	private GameManager gameManager;
 
-	public GameObject platformPivot;
+	private GameObject platformPivot;
+	[SerializeField]
+	private GameObject internalObstacle;
 
 	private bool onPlatform;
 
@@ -56,6 +55,19 @@ public class PlayerController : MonoBehaviour, IReactableObject
         {
 			React();
         }
+		if (other.CompareTag("Next"))
+		{
+			internalObstacle.transform.position = transform.position;
+
+			gameManager.NextGamePhase();
+
+			currentPosition.x = Mathf.Round(currentPosition.x);
+			currentPosition.z = Mathf.Round(currentPosition.z);
+
+			internalObstacle.SetActive(true);
+
+			GetComponent<PlayerController>().enabled = false;
+		}
 	}
 
 	private void OnCollisionEnter(Collision collision)
@@ -86,9 +98,9 @@ public class PlayerController : MonoBehaviour, IReactableObject
 		gameManager = FindObjectOfType<GameManager>();
     }
 
-	private void SetUp()
+	public void SetUp()
     {
-		// ...
+		internalObstacle.SetActive(false);
     }
 
 	private void Movement()

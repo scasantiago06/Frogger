@@ -65,21 +65,21 @@ public class Generator : MonoBehaviour
     
     private IEnumerator Generate()
     {
-        yield return new WaitForSeconds(Random.Range(minWait, maxWait));
+        yield return new WaitForSeconds(/*Random.Range(minWait, maxWait)*/.5f);
 
         GameObject gameObject = Instantiate(objectsToInstantiate);
 
         if (spawnPoint.position.x < 0)
         {
             if (objectsToInstantiate.name == "Car")
-                gameObject.GetComponent<ConstantMovement>().Speed = 7f;
+                gameObject.GetComponent<ConstantMovement>().Speed = 0f;
             else if (objectsToInstantiate.name == "Trunk")
                 gameObject.GetComponent<ConstantMovement>().Speed = 4.5f;
         }
         else
         {
             if (objectsToInstantiate.name == "Car")
-                gameObject.GetComponent<ConstantMovement>().Speed = -7f;
+                gameObject.GetComponent<ConstantMovement>().Speed = 0f;
             else if (objectsToInstantiate.name == "Trunk")
                 gameObject.GetComponent<ConstantMovement>().Speed = -4.5f;
         }
