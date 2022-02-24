@@ -9,8 +9,11 @@ public class PlayerController : MonoBehaviour, IReactableObject
 	[SerializeField]
     private LayerMask obstacles;
 
+	[SerializeField]
 	private Vector3 direction;
+	[SerializeField]
 	private Vector3 currentPosition;
+	[SerializeField]
 	private Vector3 positionToGo;
 
 	private Rigidbody rb;
@@ -21,6 +24,12 @@ public class PlayerController : MonoBehaviour, IReactableObject
 	private float jumpForce;
 
 	private GameManager gameManager;
+
+	public GameObject platformPivot;
+
+	private bool onPlatform;
+
+	public float logOffset;
 
 	#endregion Variables
 
@@ -47,7 +56,24 @@ public class PlayerController : MonoBehaviour, IReactableObject
         {
 			React();
         }
-    }
+	}
+
+	private void OnCollisionEnter(Collision collision)
+    {
+		if (collision.collider.CompareTag("Platform"))
+		{
+			DoLogStuff(collision.gameObject);
+			onPlatform = true;
+		}
+	}
+    private void OnCollisionExit(Collision collision)
+    {
+		if (collision.collider.CompareTag("Platform"))
+		{
+            platformPivot = null;
+            onPlatform = false;
+        }
+	}
 
     #endregion Unity Functions
 
@@ -83,8 +109,15 @@ public class PlayerController : MonoBehaviour, IReactableObject
 
 			Jump();
 
-			currentPosition.x = Mathf.Round(currentPosition.x);
-			currentPosition.z = Mathf.Round(currentPosition.z);
+			if (onPlatform)
+			{
+				currentPosition = platformPivot.transform.position;
+			}
+			else
+            {
+				currentPosition.x = Mathf.Round(currentPosition.x);
+				currentPosition.z = Mathf.Round(currentPosition.z);
+            }
 		}
 	}
 
@@ -135,5 +168,22 @@ public class PlayerController : MonoBehaviour, IReactableObject
 		transform.eulerAngles = new Vector3(0, 0, 0);
 	}
 
+	void DoLogStuff(GameObject log)
+	{
+		float closestPosition = 100;
+
+		foreach (Transform t in log.transform)
+		{
+			float distance = (t.position - transform.position).magnitude;
+
+			if (distance < closestPosition)
+			{
+				closestPosition = distance;
+				platformPivot = t.gameObject;
+			}
+		}
+
+		positionToGo = platformPivot.transform.position;
+	}
 	#endregion Class Functions
 }

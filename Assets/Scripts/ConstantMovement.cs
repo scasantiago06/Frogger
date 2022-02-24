@@ -26,7 +26,7 @@ public class ConstantMovement : MonoBehaviour
     {
         transform.position = Vector3.MoveTowards(transform.position, transform.position + Vector3.right, speed * Time.deltaTime);
 
-        if (transform.position.x < -20 || transform.position.x > 15)
+        if (transform.position.x < -15 || transform.position.x > 15)
             Destroy(this.gameObject);
     }
 

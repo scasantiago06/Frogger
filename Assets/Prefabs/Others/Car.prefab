@@ -134,8 +134,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4529314752072744}
   - component: {fileID: 95810523951255254}
+  - component: {fileID: 8473406574601436627}
+  - component: {fileID: 5878362397812228470}
   m_Layer: 0
-  m_Name: MT Car 01
+  m_Name: Car
   m_TagString: Dangerous
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -150,7 +152,7 @@ Transform:
   m_GameObject: {fileID: 1394382416345726}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 4318853402052516}
   - {fileID: 4042324013626100}
@@ -177,6 +179,31 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &8473406574601436627
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1394382416345726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a60ed0d2f34f90543b8c57de01bc5ea3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!65 &5878362397812228470
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1394382416345726}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.6709199, y: 1.4199946, z: 3.051849}
+  m_Center: {x: 0, y: 0.7466574, z: 0.023333013}
 --- !u!1 &1497276996788712
 GameObject:
   m_ObjectHideFlags: 0

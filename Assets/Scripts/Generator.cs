@@ -12,9 +12,9 @@ public class Generator : MonoBehaviour
     private Transform spawnPoint;
 
     [SerializeField]
-    private int minWait;
+    private float minWait;
     [SerializeField]
-    private int maxWait;
+    private float maxWait;
 
     #endregion Variables
 
@@ -70,10 +70,20 @@ public class Generator : MonoBehaviour
         GameObject gameObject = Instantiate(objectsToInstantiate);
 
         if (spawnPoint.position.x < 0)
-            gameObject.GetComponent<ConstantMovement>().Speed = 4.5f;
+        {
+            if (objectsToInstantiate.name == "Car")
+                gameObject.GetComponent<ConstantMovement>().Speed = 7f;
+            else if (objectsToInstantiate.name == "Trunk")
+                gameObject.GetComponent<ConstantMovement>().Speed = 4.5f;
+        }
         else
-            gameObject.GetComponent<ConstantMovement>().Speed = -4.5f;
-        
+        {
+            if (objectsToInstantiate.name == "Car")
+                gameObject.GetComponent<ConstantMovement>().Speed = -7f;
+            else if (objectsToInstantiate.name == "Trunk")
+                gameObject.GetComponent<ConstantMovement>().Speed = -4.5f;
+        }
+
         gameObject.transform.position = spawnPoint.position;
         gameObject.transform.eulerAngles = spawnPoint.eulerAngles;
 
