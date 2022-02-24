@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     private GameObject[] frogs;
     private PlayerController currentFrog;
     private TimeController timeController;
+    private CameraFollow cameraFollow;
 
     private int frogIndex;
     private int lifes;
@@ -46,6 +47,7 @@ public class GameManager : MonoBehaviour
     {
         uiManager = FindObjectOfType<UIManager>();
         timeController = FindObjectOfType<TimeController>();
+        cameraFollow = FindObjectOfType<CameraFollow>();
     }
 
     public void SetUp()
@@ -74,6 +76,7 @@ public class GameManager : MonoBehaviour
         frogs[frogIndex].SetActive(true);
 
         currentFrog = frogs[frogIndex].GetComponent<PlayerController>();
+        cameraFollow.player = currentFrog.gameObject;
     }
 
     public void NextGamePhase()
@@ -84,6 +87,7 @@ public class GameManager : MonoBehaviour
         {
             frogs[frogIndex].SetActive(true);
             currentFrog = frogs[frogIndex].GetComponent<PlayerController>();
+            cameraFollow.player = currentFrog.gameObject;
             timeController.Restart();
         }
         else
